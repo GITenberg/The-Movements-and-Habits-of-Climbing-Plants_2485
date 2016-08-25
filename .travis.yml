@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: ZxMPEa7+H5j4ZmyxqiCz0QAXU/M3KJDTQETFPoXVmF5Vz6R8SO8HBoY0XOlhN+WCC4CdhgFYoIwMOUtGkQ+PyK8NF3pgKcwhf3Ohi2/BJJoj4GAf9cuSMylu2yMHQzR/jRphSTWLOT4V0JDXzcDP+h9Ncwf50qlQNo/yNVVouhsneTVvwAGRuWCzUON9xpxU0OB4SKxO8xjPyn8nRR2xAHY5t7rdIdkl+3zZ5uPEvIrecR/pI1QdoFBvMyYIKGvH78xvbAODg+i6hQVyRin0j+k4P4uk1Ig7gqk6d9lsHBb/+5xJmNgyUo+eiNpeS2qcZ8NokA7s18dL7xeZDTbXVhaJuSEHM8TbN6W4OvZRqrZw9VevBatIZj7wCH3KP/UUzSrGj4I/bC+ojQbspFC6Q4be1pHKvma5s9C8Gb7LaGzyTUJVVMB2AdXM0Llb2EztCTxuhutVX5/rIDP/G7RIq+LnGEYRkhF4djktjsgWmBynpCqtKn3M98l8jxOGZF8CK3Qek2b96jSzzNM9tg4XQJZvFv7/+lhZRY+4wXzl6ldu7O3DD6AViHNThpqMfc3YP3PIRhCowdOjEXnJ33dE+NlN5Hq/Q1Ora8QUUiBcgt2CBy0BT5hxBSNkz6G6T29quw60CKzHDT9nAUWebzwZvS68GdNs5AQFQ8r0MrxN+ic=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/The-Movements-and-Habits-of-Climbing-Plants_2485
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
