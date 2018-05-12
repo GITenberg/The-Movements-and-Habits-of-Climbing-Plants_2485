@@ -1,5 +1,8 @@
 _repo: The-Movements-and-Habits-of-Climbing-Plants_2485
-_version: 0.1.0
+_version: 0.2.0
+covers:
+- cover_type: archival
+  image_path: 2485-h/images/coverb.jpg
 creator:
   author:
     agent_name: Darwin, Charles
@@ -10,6 +13,8 @@ creator:
     url: http://www.gutenberg.org/2009/agents/485
     wikipedia: http://en.wikipedia.org/wiki/Charles_Darwin
 description: ''
+edition_identifiers:
+  edition_id: http://www.gutenberg.org/ebooks/2485#The-Movements-and-Habits-of-Climbing-Plants
 gutenberg_bookshelf: Botany
 gutenberg_issued: '2001-01-01'
 gutenberg_type: Text
